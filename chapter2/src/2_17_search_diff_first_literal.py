@@ -24,13 +24,12 @@ def importingfile(filepath):
     return inputlist
 
 
-def search_dif_first_char(inputlist):
+def search_diff_first_char(inputlist):
     """
     searching the first different literals
     """
     difflist = list(set([item.split("\t")[0]+"\n" for item in inputlist]))
     return difflist
-
 
 def outputting(outputfilepath, difflist):
     """
