@@ -1,1 +1,1 @@
-sort -t $'\t' ../data/hightemp.txt | cut -c1 | uniq
+sort -k1 ../../data/chapter2/hightemp.txt | uniq --check-chars=3 | cut -f1
