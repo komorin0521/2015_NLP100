@@ -2,15 +2,20 @@
 
 import argparse
 
+
 def importingargs():
     """
     importing args
     """
-    parser = argparse.ArgumentParser(description = "Searching the different first literals")
-    parser.add_argument("--inputfilepath",help="This is the filepath of input file")
-    parser.add_argument("--outputfilepath",help="This is the filepath of output file")
+    parser = argparse.ArgumentParser(
+        description="Searching the different first literals")
+    parser.add_argument(
+        "--inputfilepath", help="This is the filepath of input file")
+    parser.add_argument(
+        "--outputfilepath", help="This is the filepath of output file")
     args = parser.parse_args()
-    return args.inputfilepath,args.outputfilepath
+    return args.inputfilepath, args.outputfilepath
+
 
 def importingfile(filepath):
     """
@@ -24,21 +29,23 @@ def importingfile(filepath):
     return inputlist
 
 
-def search_diff_first_char(inputlist):
+def search_diff_first_literal(inputlist):
     """
     searching the first different literals
     """
-    difflist = list(set([item.split("\t")[0]+"\n" for item in inputlist]))
+    difflist = list(set([item.split("\t")[0] + "\n" for item in inputlist]))
     return difflist
+
 
 def outputting(outputfilepath, difflist):
     """
     outputting into outpufile
     """
-    assert outputfilepath is not None,"outputfilepath is None"
+    assert outputfilepath is not None, "outputfilepath is None"
     outputfile = open(outputfilepath, "w")
     outputfile.write("".join(difflist))
     outputfile.close()
+
 
 def main():
     """
@@ -47,8 +54,8 @@ def main():
     print("START")
     inputfilepath, outputfilepath = importingargs()
     inputfile = importingfile(inputfilepath)
-    diflist = search_dif_first_char(inputfile)
-    outputting(outputfilepath, diflist)
+    difflist = search_diff_first_literal(inputfile)
+    outputting(outputfilepath, difflist)
     print("ALL FINISHED")
 
 if __name__ == "__main__":
