@@ -22,13 +22,7 @@ def importingfile(filepath):
     import file
     """
     assert(filepath is not None)
-    inputfile = open(filepath, "r")
-    inputlist = list()
-    for line in inputfile:
-        inputlist.append(line.strip())
-    inputfile.close()
-    assert inputfile.closed, "input file is not closed"
-
+    inputlist = [ line.strip() for line in open(filepath,"r") ]
     return inputlist
 
 
@@ -47,11 +41,8 @@ def outputting(outputfilepath, difflist):
     outputting into outpufile
     """
     assert outputfilepath is not None, "outputfilepath is None"
-    outputfile = open(outputfilepath, "w")
-    outputfile.write("".join(difflist))
-    outputfile.close()
-    assert outputfile.close, "output file is not closed"
-
+    with open(outputfilepath,"w") as outputfile:
+        outputfile.write("".join(difflist))
 
 def main():
     """
