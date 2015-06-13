@@ -12,9 +12,9 @@ def importingargs():
     parser.add_argument("--col1shellfilepath",help="This is the filepath of shell script col1")
     parser.add_argument("--col2shellfilepath",help="This is the filepath of shell script col2")
     args = parser.parse_args()
-    assert args.inputfilepath, "inputfilepath is not found"
-    assert args.col1shellfilepath,"col1shellfilepath is not found"
-    assert args.col2shellfilepath,"col2shellfilepath is not found"
+    assert args.inputfilepath is not None, "inputfilepath is not found"
+    assert args.col1shellfilepath is not None,"col1shellfilepath is not found"
+    assert args.col2shellfilepath is not None,"col2shellfilepath is not found"
     return args.inputfilepath,args.col1shellfilepath,args.col2shellfilepath
 
 
