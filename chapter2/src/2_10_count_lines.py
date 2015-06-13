@@ -1,5 +1,5 @@
 import argparse
-import subprocess
+import os
 
 def importingargs():
     """
@@ -9,22 +9,24 @@ def importingargs():
         description="Searching the different first literals")
     parser.add_argument(
         "--inputfilepath", help="This is the filepath of input file")
+    parser.add_argument("--linesnum",help="This is the lines num",type=int)
     args = parser.parse_args()
     assert args.inputfilepath,"inputfilepath is not found"
-    return args.inputfilepath
+    assert type(args.linesnum) == int, "linesnum must be int"
+    return args.inputfilepath,args.linesnum
 
-def countfilelines(inputfilepath):
-    linenum = len([1 for line in open(inputfilepath,"r")])
+def countfilelines(inputfilepath,linesnumshell):
+    #: count the lines num
+    linesnum = len([1 for line in open(inputfilepath,"r")])
 
-    #: The correct number of line num of hightemp.txt
-    correctlinenum = 24
     #: check the this program is correct or not
-    assert linenum == correctlinenum,"This define is not correct"
-    print("line:%s" % linenum)
+    assert linesnum == linesnumshell,"This define is not correct"
+    print("lines num by shell  : %s" % linesnumshell)
+    print("lines num by python : %s" % linesnum)
 
 def main():
-    inputfilepath = importingargs()
-    countfilelines(inputfilepath)
+    inputfilepath,linesnum = importingargs()
+    countfilelines(inputfilepath,linesnum)
 
 if __name__ == "__main__":
     main()

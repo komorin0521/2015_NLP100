@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import argparse
-
+import os
 
 def importingargs():
     """
@@ -12,9 +12,14 @@ def importingargs():
     parser.add_argument(
         "--inputfilepath", help="This is the filepath of input file")
     parser.add_argument(
+        "--diffcol1shellfilepath", help="This is the filepath of diffcol1shellfilepath")
+    parser.add_argument(
         "--outputfilepath", help="This is the filepath of output file")
     args = parser.parse_args()
-    return args.inputfilepath, args.outputfilepath
+    assert os.path.exists(args.inputfilepath),"%s is not found" % args.inputfilepath
+    assert os.path.exists(args.diffcol1shellfilepath), "%s is not found" % args.diffcol1shellfilepath
+
+    return args.inputfilepath, args.diffcol1shellfilepath,args.outputfilepath
 
 
 def importingfile(filepath):
@@ -31,16 +36,21 @@ def search_diff_first_literal(inputlist):
     searching the first different literals
     """
     difflist = list(set([item.split("\t")[0] + "\n" for item in inputlist]))
-    assert sorted(difflist) == sorted(["愛知県\n", "愛媛県\n", "岐阜県\n", "群馬県\n", "高知県\n", "埼玉県\n",
-                                       "山形県\n", "山梨県\n", "静岡県\n", "千葉県\n", "大阪府\n", "和歌山県\n"]), "result is not correct"
+
     return difflist
 
 
-def outputting(outputfilepath, difflist):
+def outputting(outputfilepath, diffcol1shellfilepath,difflist):
     """
     outputting into outpufile
     """
-    assert outputfilepath is not None, "outputfilepath is None"
+    
+    #: read the line col1 list from diffcol1shellfilepath
+    diffshelllist = [ "%s\n" % line.strip() for line in open(diffcol1shellfilepath,"r") ]
+
+    #: check the program is correct or not
+    assert sorted(difflist) == sorted(diffshelllist),"This program is not correct"
+    
     with open(outputfilepath,"w") as outputfile:
         outputfile.write("".join(difflist))
 
@@ -49,10 +59,10 @@ def main():
     main
     """
     print("START")
-    inputfilepath, outputfilepath = importingargs()
+    inputfilepath, diffcol1shellfilepath,outputfilepath = importingargs()
     inputfile = importingfile(inputfilepath)
     difflist = search_diff_first_literal(inputfile)
-    outputting(outputfilepath, difflist)
+    outputting(outputfilepath, diffcol1shellfilepath,difflist)
     print("ALL FINISHED")
 
 if __name__ == "__main__":
