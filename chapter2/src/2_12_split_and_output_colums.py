@@ -1,6 +1,7 @@
 import argparse
 import os
 
+
 def importingargs():
     """
     importing args
@@ -9,13 +10,18 @@ def importingargs():
         description="Split the columns and output the first colum into col1.txt and  the second colum into col2.txt")
     parser.add_argument(
         "--inputfilepath", help="This is the filepath of input file")
-    parser.add_argument("--col1shellfilepath",help="This is the filepath of shell script col1")
-    parser.add_argument("--col2shellfilepath",help="This is the filepath of shell script col2")
+    parser.add_argument(
+        "--col1shellfilepath", help="This is the filepath of shell script col1")
+    parser.add_argument(
+        "--col2shellfilepath", help="This is the filepath of shell script col2")
     args = parser.parse_args()
-    assert args.inputfilepath is not None, "inputfilepath is not found"
-    assert args.col1shellfilepath is not None,"col1shellfilepath is not found"
-    assert args.col2shellfilepath is not None,"col2shellfilepath is not found"
-    return args.inputfilepath,args.col1shellfilepath,args.col2shellfilepath
+    assert os.path.exists(
+        args.inputfilepath), "%s is not found" % args.inputfilepath
+    assert os.path.exists(
+        args.col1shellfilepath), "%s is not found" % args.col1shellfilepath
+    assert os.path.exists(
+        args.col2shellfilepath), "%s is not found" % args.col2shellfilepath
+    return args.inputfilepath, args.col1shellfilepath, args.col2shellfilepath
 
 
 def splitfilelines(inputfilepath):
@@ -31,7 +37,7 @@ def splitfilelines(inputfilepath):
     return columns1, columns2
 
 
-def output(columns1, columns2,col1shellfilepath,col2shellfilepath):
+def output(columns1, columns2, col1shellfilepath, col2shellfilepath):
     """
     outputting colums1 into col1.txt and colums2 into col2.txt
     """
@@ -52,23 +58,21 @@ def output(columns1, columns2,col1shellfilepath,col2shellfilepath):
         f2.write("".join(columns2))
 
     #: check the this program is correct or not
-    outputcolumns1 = [ line for line in open(outputfilepathcolumns1, "r")]
-    outputcolumns2 = [ line for line in open(outputfilepathcolumns2, "r")]
+    outputcolumns1 = [line for line in open(outputfilepathcolumns1, "r")]
+    outputcolumns2 = [line for line in open(outputfilepathcolumns2, "r")]
 
-    columns1_correctlist = [ line for line in open(col1shellfilepath,"r") ]
-    columns2_correctlist = [ line for line in open(col2shellfilepath,"r") ]
+    columns1_correctlist = [line for line in open(col1shellfilepath, "r")]
+    columns2_correctlist = [line for line in open(col2shellfilepath, "r")]
 
-
-    assert sorted(outputcolumns1) == sorted(columns1_correctlist), "col1.txt is not correct"
-    assert sorted(outputcolumns2) == sorted(
-        columns2_correctlist), "col2.txt is not correct"
+    assert outputcolumns1 == columns1_correctlist, "col1.txt is not correct"
+    assert outputcolumns2 == columns2_correctlist, "col2.txt is not correct"
 
 
 def main():
     print("Start")
-    inputfilepath,col1shellfilepath,col2shellfilepath = importingargs()
+    inputfilepath, col1shellfilepath, col2shellfilepath = importingargs()
     columns1, columns2 = splitfilelines(inputfilepath)
-    output(columns1, columns2,col1shellfilepath,col2shellfilepath)
+    output(columns1, columns2, col1shellfilepath, col2shellfilepath)
     print("Finished")
 
 if __name__ == "__main__":
