@@ -9,9 +9,13 @@ def importingargs():
         description="Split the columns and output the first colum into col1.txt and  the second colum into col2.txt")
     parser.add_argument(
         "--inputfilepath", help="This is the filepath of input file")
+    parser.add_argument("--col1shellfilepath",help="This is the filepath of shell script col1")
+    parser.add_argument("--col2shellfilepath",help="This is the filepath of shell script col2")
     args = parser.parse_args()
     assert args.inputfilepath, "inputfilepath is not found"
-    return args.inputfilepath
+    assert args.col1shellfilepath,"col1shellfilepath is not found"
+    assert args.col2shellfilepath,"col2shellfilepath is not found"
+    return args.inputfilepath,args.col1shellfilepath,args.col2shellfilepath
 
 
 def splitfilelines(inputfilepath):
@@ -27,7 +31,7 @@ def splitfilelines(inputfilepath):
     return columns1, columns2
 
 
-def output(columns1, columns2):
+def output(columns1, columns2,col1shellfilepath,col2shellfilepath):
     """
     outputting colums1 into col1.txt and colums2 into col2.txt
     """
@@ -47,70 +51,24 @@ def output(columns1, columns2):
     with open(outputfilepathcolumns2, "w") as f2:
         f2.write("".join(columns2))
 
-    columns1_correctlist = ["高知県\n",
-                            "埼玉県\n",
-                            "岐阜県\n",
-                            "山形県\n",
-                            "山梨県\n",
-                            "和歌山県\n",
-                            "静岡県\n",
-                            "山梨県\n",
-                            "埼玉県\n",
-                            "群馬県\n",
-                            "群馬県\n",
-                            "愛知県\n",
-                            "千葉県\n",
-                            "静岡県\n",
-                            "愛媛県\n",
-                            "山形県\n",
-                            "岐阜県\n",
-                            "群馬県\n",
-                            "千葉県\n",
-                            "埼玉県\n",
-                            "大阪府\n",
-                            "山梨県\n",
-                            "山形県\n",
-                            "愛知県\n"]
-
-    columns2_correctlist = ["江川崎\n",
-                            "熊谷\n",
-                            "多治見\n",
-                            "山形\n",
-                            "甲府\n",
-                            "かつらぎ\n",
-                            "天竜\n",
-                            "勝沼\n",
-                            "越谷\n",
-                            "館林\n",
-                            "上里見\n",
-                            "愛西\n",
-                            "牛久\n",
-                            "佐久間\n",
-                            "宇和島\n",
-                            "酒田\n",
-                            "美濃\n",
-                            "前橋\n",
-                            "茂原\n",
-                            "鳩山\n",
-                            "豊中\n",
-                            "大月\n",
-                            "鶴岡\n",
-                            "名古屋\n"]
     #: check the this program is correct or not
-    outputcolumns1 = [line for line in open(outputfilepathcolumns1, "r")]
-    outputcolumns2 = [line for line in open(outputfilepathcolumns2, "r")]
+    outputcolumns1 = [ line for line in open(outputfilepathcolumns1, "r")]
+    outputcolumns2 = [ line for line in open(outputfilepathcolumns2, "r")]
 
-    assert sorted(outputcolumns1) == sorted(
-        columns1_correctlist), "col1.txt is not correct"
+    columns1_correctlist = [ line for line in open(col1shellfilepath,"r") ]
+    columns2_correctlist = [ line for line in open(col2shellfilepath,"r") ]
+
+
+    assert sorted(outputcolumns1) == sorted(columns1_correctlist), "col1.txt is not correct"
     assert sorted(outputcolumns2) == sorted(
         columns2_correctlist), "col2.txt is not correct"
 
 
 def main():
     print("Start")
-    inputfilepath = importingargs()
+    inputfilepath,col1shellfilepath,col2shellfilepath = importingargs()
     columns1, columns2 = splitfilelines(inputfilepath)
-    output(columns1, columns2)
+    output(columns1, columns2,col1shellfilepath,col2shellfilepath)
     print("Finished")
 
 if __name__ == "__main__":
