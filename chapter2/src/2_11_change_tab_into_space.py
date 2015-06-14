@@ -1,6 +1,7 @@
 import argparse
 import os
 
+
 def importingargs():
     """
     importing args
@@ -9,17 +10,25 @@ def importingargs():
         description="Change tab into space")
     parser.add_argument(
         "--inputfilepath", help="This is the filepath of input file")
-    parser.add_argument("--resultshellpath",help="This is the path of result shell script")
-    parser.add_argument("--outputfilepath",help="This is the outputfilepath")
+    parser.add_argument(
+        "--resultshellpath", help="This is the path of result shell script")
+    parser.add_argument("--outputfilepath", help="This is the outputfilepath")
     args = parser.parse_args()
-    assert os.path.exists(args.inputfilepath),"inputfilepath is not found"
-    assert os.path.exists(args.resultshellpath),"%s is not found" % args.resultshellpath
+    assert os.path.exists(args.inputfilepath), "inputfilepath is not found"
+    assert os.path.exists(
+        args.resultshellpath), "%s is not found" % args.resultshellpath
 
-    return args.inputfilepath,args.resultshellpath,args.outputfilepath
+    return args.inputfilepath, args.resultshellpath, args.outputfilepath
+
 
 def changetabintospace(inputfilepath):
+    """
+    Change read the file and change tab into space
+    """
     resultlist = list()
-    inputlist = [ line.strip() for line in open(inputfilepath,"r") ]
+    #: reading the inputfile
+    inputlist = [line.strip() for line in open(inputfilepath, "r")]
+
     for line in inputlist:
         line = line.split("\t")
         outstr = ""
@@ -31,20 +40,26 @@ def changetabintospace(inputfilepath):
 
     return resultlist
 
-def output(resultshellpath,outputfilepath,resultlist):
 
-    resultshelllist = [ line for line in open(resultshellpath,"r") ]
+def output(resultshellpath, outputfilepath, resultlist):
+    """
+    Checking the program correct or not and outputting
+    """
 
-    assert resultlist == resultshelllist,"This program is not correct"
+    resultshelllist = [line for line in open(resultshellpath, "r")]
 
-    with open(outputfilepath,"w") as outputfile:
+    #: Checking the program is correct or not
+    assert resultlist == resultshelllist, "This program is not correct"
+
+    with open(outputfilepath, "w") as outputfile:
         outputfile.write("".join(resultlist))
+
 
 def main():
     print("Start")
-    inputfilepath,resultshellpath,outputfilepath = importingargs()
+    inputfilepath, resultshellpath, outputfilepath = importingargs()
     resultlist = changetabintospace(inputfilepath)
-    output(resultshellpath,outputfilepath,resultlist)
+    output(resultshellpath, outputfilepath, resultlist)
     print("Finished")
 
 if __name__ == "__main__":
