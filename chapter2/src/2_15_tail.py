@@ -7,7 +7,7 @@ def importingargs():
     importing args
     """
     parser = argparse.ArgumentParser(
-        description="Extract head N lines")
+        description="Extract tail N lines")
     parser.add_argument(
         "--inputfilepath", help="This is the filepath of input file")
     parser.add_argument(
