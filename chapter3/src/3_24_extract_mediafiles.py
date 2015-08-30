@@ -34,18 +34,21 @@ def importingfile(inputfilepath):
 #    return outputlist
 
 def extract_mediafiles(inputlist):
-    outputlist = [ tmp + '\n' for tmp in inputlist if re.match('.*?ファイル.*?',tmp) is not None  ]
+
+    outputlist = [ re.match('.*?(File|ファイル).*?\.(jpg|jpeg|svg)',tmp,re.I).group(0).split(':')[1] for tmp in inputlist if re.match('.*?(File|ファイル).*?\.(jpg|jpeg|svg)',tmp,re.I) ]
+
     return outputlist
 
 def output(outputfilepath,outputlist):
     with open(outputfilepath,"w") as of:
-        of.write("".join(outputlist))
+        of.write("\n".join(outputlist))
 
 def main():
     print("Start")
     inputfilepath, outputfilepath = importingargs()
     inputlist = importingfile(inputfilepath)
     outputlist = extract_mediafiles(inputlist)
+
     output(outputfilepath,outputlist)
     print("Finish")
 
